@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <title>Walnutpad Project | About</title>
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-light bg-dark border-bottom">
+
+                <div class="container">
+                    <a class="navbar-brand" href="/">Dae On Kim</a>
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                        aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="mainNavbar">
+
+                        <div class="navbar-nav ms-auto">
+                            <a class="nav-link" href="/projects/walnutpad/about/ko">한국어</a>
+                            <a class="nav-link" href="/">Home</a>
+                            <a class="nav-link" href="/posts/">Posts</a>
+                            <a class="nav-link active" aria-current="page" href="/projects/">Projects</a>
+                            <a class="nav-link" href="/about/">About</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <main class="container py-5">
+            <h1>Walnutpad</h1>
+
+            <p class="fst-italic mb-4">A shared notes application</p>
+
+            <section class="mb-4">
+                <h3>Overview</h3>
+
+                <p>
+                    Walnutpad is a collaborative note-sharing application that allows users to
+                    create rooms where members can write, edit, and organize shared notes.
+                </p>
+
+                <p>
+                    The project was inspired by a common problem I observed in many small communities
+                    I belong to. Groups such as families, couples, clubs, and hobby communities often rely
+                    on messaging applications like KakaoTalk for communication.
+                    While chat applications are convenient for conversations, important information is easily
+                    buried as new messages accumulate, making announcements difficult to find and long-term
+                    information difficult to manage.
+                </p>
+
+                <p>
+                    Walnutpad addresses this by providing a persistent shared workspace instead of a chronological
+                    chat feed. Each member can maintain their own notes, while administrators can pin important
+                    announcements so they remain easily accessible to everyone.
+                    The application is suitable for a wide range of use cases, from families maintaining shared
+                    grocery lists to clubs organizing events and equipment checklists.
+                </p>
+            </section>
+
+            <section class="mb-4">
+                <h3>Key Features</h3>
+
+                <ul>
+                    <li>Room-based collaboration</li>
+                    <li>JWT authentication with access & refresh tokens</li>
+                    <li>Role-based permissions (Admin / Member)</li>
+                    <li>Rich note editing and organization</li>
+                    <li>Pinned announcements</li>
+                </ul>
+            </section>
+
+            <section class="mb-4">
+                <h3>Screenshots</h3>
+
+                <img src="" alt="Screenshot1">
+                <img src="" alt="Screenshot2">
+                <img src="" alt="Screenshot3">
+                <img src="" alt="Screenshot4">
+                <img src="" alt="Screenshot5">
+            </section>
+
+            <section class="mb-4">
+                <h3>System Architecture</h3>
+
+                <p>
+                    WalnutPad follows a client-server architecture designed to support secure authentication,
+                    reliable deployment, and maintainable operations.
+                </p>
+
+                <div class="card shadow-sm mb-5">
+
+                    <div class="card-body">
+
+                        <pre class="mermaid">
+                            graph TD
+                            Client["📱 Flutter App"] --> |HTTPS via Cloudflare| Nginx["🌐 Nginx Reverse Proxy"]
+                            Nginx --> API["⚡ FastAPI Backend"]
+                            API --> DB["🐘 PostgreSQL"]
+                            API --> Email["✉️ Resend"]
+                            API --> Sentry["📊 Sentry"]
+                            Client --> Sentry
+                            DB --> Backup["☁️ Google Cloud Storage"]
+                        </pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-4">
+                <h3>Data Model</h3>
+
+                <p>
+                    ERD was designed based on the relationships between users, rooms, permissions, and notes.
+                </p>
+
+                <div class="card shadow-sm mb-5">
+
+                    <div class="card-body">
+                        <pre class="mermaid">
+                            erDiagram
+                            USERS {
+                            uuid id PK
+                            string email
+                            string password_hash
+                            }
+
+                            ROOMS {
+                            uuid id PK
+                            string name
+                            string invite_code
+                            }
+
+                            ROOM_MEMBERS {
+                            uuid id PK
+                            uuid user_id FK
+                            uuid room_id FK
+                            bool is_admin
+                            }
+
+                            ITEMS {
+                            uuid id PK
+                            uuid room_id FK
+                            uuid author_id FK
+                            string title
+                            text content
+                            }
+
+                            USERS ||--o{ ROOM_MEMBERS : "joins"
+                            USERS ||--o{ ITEMS : "writes"
+                            ROOMS ||--|{ ROOM_MEMBERS : "has"
+                            ROOMS ||--o{ ITEMS : "contains"
+                        </pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-4">
+                <h3>Technical Decisions & System Design</h3>
+
+                <p>
+                    This backend was built around a simple goal: support real-time, room-based collaboration
+                    while keeping the system easy to deploy and reason about in production.
+                    Most decisions were made to balance simplicity, performance, and operational clarity rather than
+                    overengineering.
+                </p>
+
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">FastAPI</h5>
+
+                                <p class="card-text">
+                                    I chose FastAPI because the project involves a lot of I/O-heavy operations such as
+                                    database access and room updates. Its async support fits naturally with this
+                                    workload and keeps the backend lightweight compared to heavier frameworks.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">API Design</h5>
+
+                                <p class="card-text">
+                                    The API is designed as a RESTful service with versioning at the root level (v1, v2),
+                                    mainly to allow future changes without breaking existing clients. I tried to keep
+                                    endpoints resource-based and consistent in structure rather than introducing
+                                    action-heavy routes.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">Database</h5>
+
+                                <p class="card-text">
+                                    I used PostgreSQL because the data model is relational by nature (users, rooms,
+                                    permissions). I needed strong consistency and didn’t want to deal with eventual
+                                    consistency issues for something like access control.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">Schema Management</h5>
+
+                                <p class="card-text">
+                                    For database schema management, I use SQLAlchemy with Alembic migrations. Each
+                                    migration is versioned by timestamp, which makes schema changes traceable and
+                                    ensures consistent deployment across environments without manual database
+                                    modifications.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">Authentication & Authorization</h5>
+
+                                <p class="card-text">
+                                    Authentication uses minimal-claim JWT access and refresh tokens containing only the
+                                    user ID and expiry. Authorization decisions are resolved server-side through
+                                    database lookups, which keeps the token purely as an authentication credential
+                                    rather than embedding permissions.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">Cloudflare</h5>
+
+                                <p class="card-text">
+                                    I mainly used Cloudflare for DNS and TLS handling. It also reduces direct exposure
+                                    of the origin server, which simplifies security concerns at the infrastructure
+                                    level without adding extra backend complexity.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">Nginx</h5>
+
+                                <p class="card-text">
+                                    Nginx is used as a reverse proxy in front of FastAPI. Since everything runs on a
+                                    single VM, it’s mostly there to handle routing cleanly and keep the deployment
+                                    setup straightforward.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">Docker</h5>
+
+                                <p class="card-text">
+                                    I containerized both the backend and PostgreSQL so the environment is reproducible.
+                                    This made deployment on the VM predictable and reduced “works on my machine” issues.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">CI/CD (GitHub Actions)</h5>
+
+                                <p class="card-text">
+                                    I set up a simple GitHub Actions pipeline to run tests and build the Docker image
+                                    before deployment. This removes manual deployment steps and ensures basic validation
+                                    happens before changes are deployed.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">Testing</h5>
+
+                                <p class="card-text">
+                                    For integration tests, I used Testcontainers to spin up a real Postgres instance.
+                                    This helped avoid discrepancies between local mocks and actual database behavior.
+                                </p>
+
+                                <p class="card-text">
+                                    I focused on adding intuitive tests with pytest and coverage to maintain test
+                                    converages at at least 85%.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">Monitoring (Sentry)</h5>
+
+                                <p class="card-text">
+                                    I use Sentry to track backend and client errors in production. Important alerts are
+                                    forwarded to Discord and email so I don’t have to constantly check dashboards.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">Backups</h5>
+
+                                <p class="card-text">
+                                    Database backups are generated on a schedule and stored in Google Cloud Storage.
+                                    This was mainly to avoid relying on a single VM for data durability.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="mb-4">
+                <h3>Future Implementation</h3>
+
+                <div class="row g-4">
+
+                    <div class="col-md-12">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">Caching</h5>
+
+                                <p class="card-text">
+                                    Caching is not implemented at the current scale, but it was considered for
+                                    frequently accessed notes or active room metadata. I decided to keep the system
+                                    simple for now and rely on direct database queries. Introducing caching at this
+                                    stage would add additional complexity around invalidation, memory usage, and
+                                    infrastructure management. The system is structured so caching can be added later
+                                    without changing the API layer.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="container py-4 border-top text-center text-muted small mt-5">
+
+            <p class="mb-0">© 2026 Dae On Kim. All rights reserved.</p>
+        </footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+        <script type="module">
+            import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            mermaid.initialize({startOnLoad: true});
+        </script>
+    </body>
+</html>

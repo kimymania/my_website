@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko" data-bs-theme="dark">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <title>Walnutpad Project | About</title>
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-light bg-dark border-bottom">
+
+                <div class="container">
+                    <a class="navbar-brand" href="/">Dae On Kim</a>
+
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                        aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+
+                    <div class="collapse navbar-collapse" id="mainNavbar">
+
+                        <div class="navbar-nav ms-auto">
+                            <a class="nav-link" href="/projects/walnutpad/about/en">ENGLISH</a>
+                            <a class="nav-link" href="/">Home</a>
+                            <a class="nav-link" href="/posts/">Posts</a>
+                            <a class="nav-link active" aria-current="page" href="/projects/">Projects</a>
+                            <a class="nav-link" href="/about/">About</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
+
+        <main class="container py-5">
+            <h1>Walnutpad</h1>
+
+            <p class="fst-italic mb-4">공유 노트 어플리케이션</p>
+
+            <section class="mb-4">
+                <h3>개요</h3>
+
+                <p>
+                    Walnutpad는 사용자들이 하나의 공간(방)에서 함께 노트를 작성하고 수정하며 정리할 수 있는 노트 공유 애플리케이션입니다.
+                </p>
+
+                <p>
+                    이 프로젝트는 제가 속해 있던 여러 소규모 커뮤니티에서 느꼈던 불편함에서 시작됐습니다.
+                    가족이나 친구, 동호회 같은 작은 그룹들은 보통 카카오톡 같은 메신저로 소통하지만,
+                    대화가 쌓이면서 중요한 정보가 쉽게 묻히고 나중에 찾기 어려워지는 문제가 있었습니다.
+                </p>
+
+                <p>
+                    Walnutpad은 이런 문제를 해결하기 위해 채팅 대신 지속적으로 유지되는 공유 작업 공간을 제공합니다.
+                    각 사용자는 자신의 노트를 자유롭게 작성할 수 있고, 관리자는 중요한 내용을 공지로 고정해 모두가 쉽게 확인할 수 있도록 했습니다.
+                    이 앱은 가족의 장보기 리스트부터 동호회의 일정 및 준비물 관리까지 다양한 상황에서 사용할 수 있습니다.
+                </p>
+            </section>
+
+            <section class="mb-4">
+                <h3>주요 기능</h3>
+
+                <ul>
+                    <li>방 기반 협업 기능</li>
+                    <li>JWT 인증 (access & refresh 토큰)</li>
+                    <li>관리자 / 일반 사용자 권한 구분</li>
+                    <li>노트 작성 및 정리 기능</li>
+                    <li>중요 공지 고정 기능</li>
+                </ul>
+            </section>
+
+            <section class="mb-4">
+                <h3>스크린샷</h3>
+
+                <img src="" alt="Screenshot1">
+                <img src="" alt="Screenshot2">
+                <img src="" alt="Screenshot3">
+                <img src="" alt="Screenshot4">
+                <img src="" alt="Screenshot5">
+            </section>
+
+            <section class="mb-4">
+                <h3>시스템 아키텍처</h3>
+
+                <div class="card shadow-sm mb-5">
+
+                    <div class="card-body">
+
+                        <pre class="mermaid">
+                            graph TD
+                            Client["📱 Flutter App"] --> |HTTPS via Cloudflare| Nginx["🌐 Nginx Reverse Proxy"]
+                            Nginx --> API["⚡ FastAPI Backend"]
+                            API --> DB["🐘 PostgreSQL"]
+                            API --> Email["✉️ Resend"]
+                            API --> Sentry["📊 Sentry"]
+                            Client --> Sentry
+                            DB --> Backup["☁️ Google Cloud Storage"]
+                        </pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-4">
+                <h3>데이터 모델</h3>
+
+                <p>
+                    데이터 구조는 사용자, 방, 권한, 노트 중심의 관계형 구조로 설계했습니다.
+                    협업 기능 특성상 권한과 데이터 소유 관계가 명확해야 해서 관계형 DB를 선택했습니다.
+                </p>
+
+                <div class="card shadow-sm mb-5">
+
+                    <div class="card-body">
+                        <pre class="mermaid">
+                            erDiagram
+                            USERS {
+                            uuid id PK
+                            string email
+                            string password_hash
+                            }
+
+                            ROOMS {
+                            uuid id PK
+                            string name
+                            string invite_code
+                            }
+
+                            ROOM_MEMBERS {
+                            uuid id PK
+                            uuid user_id FK
+                            uuid room_id FK
+                            bool is_admin
+                            }
+
+                            ITEMS {
+                            uuid id PK
+                            uuid room_id FK
+                            uuid author_id FK
+                            string title
+                            text content
+                            }
+
+                            USERS ||--o{ ROOM_MEMBERS : "joins"
+                            USERS ||--o{ ITEMS : "writes"
+                            ROOMS ||--|{ ROOM_MEMBERS : "has"
+                            ROOMS ||--o{ ITEMS : "contains"
+                        </pre>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-4">
+                <h3>기술적 의사결정 및 시스템 설계</h3>
+
+                <p>
+                    이 백엔드 시스템은 실시간 방 (그룹) 기반 협업을 지원하면서도 배포와 운영이 단순한 구조를 유지하는 것을 목표로 설계되었습니다.
+                    과도한 설계보다는 단순성, 성능, 운영 편의성 사이의 균형을 우선적으로 고려했습니다.
+                </p>
+
+                <div class="row g-4">
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">FastAPI</h5>
+
+                                <p class="card-text">
+                                    데이터베이스 요청이나 방 업데이트처럼 I/O 작업이 많은 구조라서 async 처리가 자연스럽고,
+                                    비교적 가벼운 FastAPI를 선택했습니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">API 설계</h5>
+
+                                <p class="card-text">
+                                    API는 RESTful 구조로 설계했고, v1 / v2처럼 url 루트에서 버전을 관리하여 기존 클라이언트에 대한
+                                    지원을 유지하면서도 기능을 확장할 수 있도록 설계하였고, 또한 action 중심이 아니라 resource 중심 구조를
+                                    유지하려고 했습니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">데이터베이스</h5>
+
+                                <p class="card-text">
+                                    사용자, 방, 권한처럼 관계가 중요한 구조라서 PostgreSQL을 선택했습니다.
+                                    특히 접근 권한 같은 핵심 로직에서 eventual consistency 문제를 피하고 싶었기 때문에
+                                    강한 일관성을 제공하는 RDBMS가 적합하다고 판단했습니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">스키마 관리</h5>
+
+                                <p class="card-text">
+                                    SQLAlchemy와 Alembic을 사용하여 데이터베이스 스키마를 관리하고 있습니다.
+                                    모든 마이그레이션은 timestamp 기준으로 버전 관리되며,
+                                    이를 통해 환경 간 DB 구조를 일관되게 유지하고 수동으로 스키마를 변경하는 것을 방지합니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">인증 및 권한 관리</h5>
+
+                                <p class="card-text">
+                                    인증은 user_id와 만료 시간만 포함하는 minimal-claim JWT access 및 refresh 토큰을 사용합니다.
+                                    권한 판단은 서버에서 데이터베이스 조회를 통해 처리되며, 토큰 자체는 인증 정보만 담당하도록 설계했습니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">Cloudflare</h5>
+
+                                <p class="card-text">
+                                    Cloudflare는 DNS 관리와 TLS 처리를 위해 사용했습니다. 외부에서 바로 서버가 노출되지 않도록 중간
+                                    레이어 역할을 하면서 기본적인 인프라 보안을 확보할 수 있었습니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">Nginx</h5>
+
+                                <p class="card-text">
+                                    FastAPI 앞단에서 리버스 프록시 역할을 하도록 Nginx를 사용했습니다. 모든 서비스가 단일 VM에서 동작하기
+                                    때문에 복잡한 구조보다는 요청 라우팅을 명확하게 분리하고 배포 구성을 단순하게 유지하는 목적이 컸습니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">Docker</h5>
+
+                                <p class="card-text">
+                                    백엔드와 PostgreSQL 모두 Docker로 컨테이너화해서 전체 실행 환경을 동일하게 유지할 수 있도록 했습니다.
+                                    이를 통해 로컬과 배포 환경 간 차이로 발생하는 문제를 줄이고, VM 환경에서도 예측 가능한 방식으로 배포할 수
+                                    있었습니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">CI/CD (GitHub Actions)</h5>
+
+                                <p class="card-text">
+                                    GitHub Actions를 이용해 테스트 실행과 Docker 이미지 빌드를 자동화했습니다.
+                                    이를 통해 배포 과정에서 발생할 수 있는 수동 작업을 줄이고 기본적인 검증을 자동으로 수행하도록 했습니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">테스트</h5>
+
+                                <p class="card-text">
+                                    Testcontainers를 사용해서 실제 PostgreSQL 환경과 동일한 조건에서 통합 테스트를 진행했습니다.
+                                    또한 pytest 기반으로 테스트를 구성하고, coverage를 사용해 전체 코드 기준 약 85% 이상의 커버리지를
+                                    유지하는 중입니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">모니터링 (Sentry)</h5>
+
+                                <p class="card-text">
+                                    Sentry를 통해 백엔드와 클라이언트의 에러를 수집하고 있습니다.
+                                    주요 알림은 Discord와 이메일로 전달되도록 구성해서 장애 발생 시 빠르게 확인할 수 있도록 했습니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">백업</h5>
+
+                                <p class="card-text">
+                                    데이터베이스는 주기적으로 백업되어 Google Cloud Storage에 저장됩니다.
+                                    단일 VM에 의존하지 않도록 데이터 안정성을 확보하기 위한 구성입니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="mb-4">
+                <h3>향후 개선 사항</h3>
+
+                <div class="row g-4">
+
+                    <div class="col-md-12">
+
+                        <div class="card h-100 shadow-sm">
+
+                            <div class="card-body">
+                                <h5 class="card-title">캐싱</h5>
+
+                                <p class="card-text">
+                                    현재 규모에서는 캐싱이 꼭 필요하지 않다고 판단해서 적용하지 않았지만, 추후에 트래픽이 증가하게 된다면
+                                    자주 조회되는 노트나 방 정보에 대해서는 캐싱을 고려하고 있습니다. 캐싱을 도입하면 invalidation,
+                                    메모리 사용, 인프라 복잡도가 증가하기 때문에 현재는 DB 기반 구조를 유지하고 있습니다.
+                                    구조 자체는 이후 캐싱을 추가하더라도 API 변경 없이 확장 가능하도록 설계했습니다.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="container py-4 border-top text-center text-muted small mt-5">
+
+            <p class="mb-0">© 2026 Dae On Kim. All rights reserved.</p>
+        </footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+        <script type="module">
+            import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+            mermaid.initialize({startOnLoad: true});
+        </script>
+    </body>
+</html>
