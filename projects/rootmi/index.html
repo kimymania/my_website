@@ -3,8 +3,36 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description"
+            content="RootMi is a simple, quick chord sheet editor made for iPad. Draw with Apple Pencil and share songs with your band, group or friends.">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
-        <title>RootMi | Chord Sheet Editor</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+            rel="stylesheet" />
+        <title>RootMi | Chord Sheet Editor for iPad</title>
+        <style>
+            .hero {
+                padding: 5rem 0 4rem;
+                background: radial-gradient(ellipse at top, rgba(var(--bs-primary-rgb), 0.18), transparent 70%);
+            }
+
+            .feature-icon {
+                font-size: 1.75rem;
+                line-height: 1;
+                color: var(--bs-primary);
+            }
+
+            .step-number {
+                width: 2.5rem;
+                height: 2.5rem;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                font-weight: 700;
+                background: var(--bs-primary);
+                color: #fff;
+            }
+        </style>
     </head>
     <body>
         <header>
@@ -30,193 +58,175 @@
             </nav>
         </header>
 
-        <main class="container py-5 text-center">
+        <main>
 
-            <div class="text-center mb-5">
-                <h1 class="display-5 fw-bold">RootMi</h1>
+            <section class="hero text-center">
 
-                <p class="lead text-muted">
-                    A co-operative chord sheet editor for musicians and bands
-                </p>
-            </div>
+                <div class="container">
+                    <h1 class="display-3 fw-bold">RootMi</h1>
 
-            <section class="mb-5">
+                    <p class="lead mx-auto mt-3" style="max-width: 40rem;">
+                        Simple, quick chord sheets for your band. Made for iPad, with Apple Pencil drawing and
+                        easy sharing.
+                    </p>
 
-                <p>
-                    RootMi is a collaborative music tool that allows band members to create, edit,
-                    and share chord sheets in real time. It is designed for both practice sessions
-                    and live performances, supporting offline use and seamless synchronization when online.
-                </p>
+                    <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+                        <span class="btn btn-primary btn-lg disabled" aria-disabled="true">Coming soon to the App
+                            Store</span>
+                        <a class="btn btn-outline-secondary btn-lg" href="/projects/rootmi/support.html">Support</a>
+                    </div>
+
+                    <p class="text-muted small mt-3 mb-0">Requires iPadOS 15.0 or later. English and 한국어.</p>
+                </div>
             </section>
 
-            <section class="mb-5">
-                <h2 class="h4 mb-3">What RootMi does</h2>
+            <section class="container py-5">
+                <h2 class="text-center mb-5">Everything a band needs, nothing it doesn't</h2>
 
-                <p>
-                    RootMi helps musicians work together on song arrangements using simple chord-based sheets.
-                </p>
+                <div class="row g-4">
 
-                <ul class="list-group">
-                    <li class="list-group-item">Create chord sheets for songs</li>
-                    <li class="list-group-item">Edit and annotate sheets using touch or stylus input</li>
-                    <li class="list-group-item">Share sheets with band members</li>
-                    <li class="list-group-item">Collaborate in real time during rehearsals or live sessions</li>
-                    <li class="list-group-item">Automatically transpose chords into different musical keys</li>
-                    <li class="list-group-item">Access and edit sheets even without an internet connection</li>
-                    <li class="list-group-item">Switch between light and dark mode according to your preference</li>
-                </ul>
-            </section>
+                    <div class="col-md-6 col-lg-4">
 
-            <section class="mb-5">
-                <h2 class="h4 mb-3">Key Features</h2>
+                        <div class="border rounded p-4 h-100">
+                            <div class="feature-icon mb-3" aria-hidden="true"><i class="bi bi-lightning-charge"></i></div>
+                            <h3 class="h5">Simple and quick</h3>
 
-                <div class="row g-3">
-
-                    <div class="col-md-6">
-
-                        <div class="border rounded p-3 h-100">
-                            <h3 class="h6">Offline-first editing</h3>
-
-                            <p class="mb-0 text-muted">
-                                Works reliably even in rehearsal environments with limited connectivity.
+                            <p class="text-muted mb-0">
+                                Type chords straight onto bars with a chord keyboard built for speed. 7ths, slash
+                                chords, sus and tensions, or your own notation.
                             </p>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6 col-lg-4">
 
-                        <div class="border rounded p-3 h-100">
-                            <h3 class="h6">Chord-based system</h3>
+                        <div class="border rounded p-4 h-100">
+                            <div class="feature-icon mb-3" aria-hidden="true"><i class="bi bi-link-45deg"></i></div>
+                            <h3 class="h5">Linked sections</h3>
 
-                            <p class="mb-0 text-muted">
-                                Simple chord sheets instead of full music notation for quick editing.
+                            <p class="text-muted mb-0">
+                                Link every Verse and Chorus, so one edit updates every repeat. Add repeat signs,
+                                endings and key, tempo or time-signature changes.
                             </p>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6 col-lg-4">
 
-                        <div class="border rounded p-3 h-100">
-                            <h3 class="h6">Setlists</h3>
+                        <div class="border rounded p-4 h-100">
+                            <div class="feature-icon mb-3" aria-hidden="true"><i class="bi bi-music-note-beamed"></i></div>
+                            <h3 class="h5">Play in any key</h3>
 
-                            <p class="mb-0 text-muted">
-                                Create, store and edit entire setlists for a session.
+                            <p class="text-muted mb-0">
+                                Change the key and every chord follows. Bass players can view just the bass notes.
                             </p>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6 col-lg-4">
 
-                        <div class="border rounded p-3 h-100">
-                            <h3 class="h6">Handwriting & drawing</h3>
+                        <div class="border rounded p-4 h-100">
+                            <div class="feature-icon mb-3" aria-hidden="true"><i class="bi bi-pencil"></i></div>
+                            <h3 class="h5">Draw with Apple Pencil</h3>
 
-                            <p class="mb-0 text-muted">
-                                Annotate sheets using stylus or touch input.
+                            <p class="text-muted mb-0">
+                                Write notes, circle a section or mark a cue right on the sheet. Touch works too.
                             </p>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6 col-lg-4">
 
-                        <div class="border rounded p-3 h-100">
-                            <h3 class="h6">Auto transpose</h3>
+                        <div class="border rounded p-4 h-100">
+                            <div class="feature-icon mb-3" aria-hidden="true"><i class="bi bi-list-ol"></i></div>
+                            <h3 class="h5">Setlists</h3>
 
-                            <p class="mb-0 text-muted">
-                                Instantly change key for any song arrangement.
+                            <p class="text-muted mb-0">
+                                Put your songs in order for the gig, with lyrics under the bars and undo for every
+                                edit.
                             </p>
                         </div>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-6 col-lg-4">
 
-                        <div class="border rounded p-3 h-100">
-                            <h3 class="h6">Cloud sync</h3>
+                        <div class="border rounded p-4 h-100">
+                            <div class="feature-icon mb-3" aria-hidden="true"><i class="bi bi-people"></i></div>
+                            <h3 class="h5">Share with your band</h3>
 
-                            <p class="mb-0 text-muted">
-                                Store and share chord sheets across devices.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6">
-
-                        <div class="border rounded p-3 h-100">
-                            <h3 class="h6">Real-time collaboration</h3>
-
-                            <p class="mb-0 text-muted">
-                                Edit together during live sessions and rehearsals.
+                            <p class="text-muted mb-0">
+                                Upload songs and setlists, join groups and share with members, or export a PDF or
+                                image for friends.
                             </p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section class="mb-5">
-                <h2 class="h4 mb-3">Data Collection & Usage</h2>
+            <section class="py-5 bg-body-tertiary">
 
-                <div class="card">
+                <div class="container">
+                    <h2 class="text-center mb-5">How it works</h2>
 
-                    <div class="card-body">
+                    <div class="row g-4 text-center">
 
-                        <p>
-                            RootMi collects minimal user data to provide core functionality.
-                        </p>
+                        <div class="col-md-4">
+                            <span class="step-number mb-3">1</span>
+                            <h3 class="h5">Set up your song</h3>
+                            <p class="text-muted mb-0">Pick a key, tempo and sections like Verse and Chorus.</p>
+                        </div>
 
-                        <h3 class="h6">Email address</h3>
+                        <div class="col-md-4">
+                            <span class="step-number mb-3">2</span>
+                            <h3 class="h5">Add the chords</h3>
+                            <p class="text-muted mb-0">Tap bars, type chords and add lyrics. Draw notes with your Pencil.
+                            </p>
+                        </div>
 
-                        <p class="text-muted">
-                            Used for authentication, password recovery, and important service-related notifications.
-                        </p>
-
-                        <h3 class="h6">User content (chord sheets)</h3>
-
-                        <p class="text-muted">
-                            Stored securely to enable syncing and collaboration. Shared only when explicitly
-                            chosen by the user.
-                        </p>
-
-                        <p class="mb-0">
-                            We do not sell user data or use it for advertising purposes.
-                        </p>
+                        <div class="col-md-4">
+                            <span class="step-number mb-3">3</span>
+                            <h3 class="h5">Play and share</h3>
+                            <p class="text-muted mb-0">Change the key, build a setlist and share it with your band.</p>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <section class="mb-5">
-                <h2 class="h4 mb-3">Purpose of Data Usage</h2>
-                <ul class="list-group">
-                    <li class="list-group-item">User authentication and account security</li>
-                    <li class="list-group-item">Real-time collaboration features</li>
-                    <li class="list-group-item">Storage and synchronization of chord sheets</li>
-                    <li class="list-group-item">Essential account and service notifications</li>
-                </ul>
-            </section>
+            <section class="container py-5 text-center">
+                <h2 class="mb-3">Works offline</h2>
 
-            <section class="mb-5">
-                <h2 class="h4 mb-3">Ownership</h2>
-
-                <p>
-                    RootMi is independently created and maintained by a Dae-On Kim who is the sole
-                    owner of the application.
+                <p class="text-muted mx-auto" style="max-width: 36rem;">
+                    Songs and setlists are stored on your device, ready for rehearsal rooms with no signal. You only
+                    need an account to upload songs or join groups. RootMi has no ads and no tracking.
                 </p>
             </section>
 
-            <section class="mb-5">
-                <h2 class="h4 mb-3">Legal</h2>
+            <section class="container pb-5">
 
-                <div class="d-flex flex-column align-items-center gap-2">
-                    <span>
-                        <a href="/projects/rootmi/privacy.html">Privacy Policy</a>
-                        |
-                        <a href="/projects/rootmi/terms.html">Terms of Service</a>
-                        |
-                        <a href="mailto:daydayonoff@gmail.com">Support Contact</a>
-                    </span>
+                <div class="card text-center">
+
+                    <div class="card-body p-4">
+                        <h2 class="h4">About RootMi</h2>
+
+                        <p class="text-muted mb-0">
+                            RootMi is independently created and maintained by Dae On Kim, who is the sole owner of the
+                            app. Questions or feedback? Visit the <a href="/projects/rootmi/support.html">support
+                                page</a> or email <a href="mailto:daydayonoff@gmail.com">daydayonoff@gmail.com</a>.
+                        </p>
+                    </div>
                 </div>
             </section>
         </main>
 
         <footer class="container py-4 border-top text-center text-muted small mt-5">
+
+            <p class="mb-2">
+                <a href="/projects/rootmi/support.html">Support</a>
+                |
+                <a href="/projects/rootmi/privacy.html">Privacy Policy</a>
+                |
+                <a href="/projects/rootmi/terms.html">Terms of Service</a>
+            </p>
 
             <p class="mb-0">© 2026 Dae On Kim. All rights reserved.</p>
         </footer>
