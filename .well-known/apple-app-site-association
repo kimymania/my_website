@@ -1,0 +1,15 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["J8KRSJ9ZYH.com.daeon.score"],
+        "components": [
+          {
+            "/": "/projects/rootmi/join",
+            "comment": "RootMi group invites: opens the app to join the group in ?code="
+          }
+        ]
+      }
+    ]
+  }
+}
