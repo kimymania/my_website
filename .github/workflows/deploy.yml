@@ -20,4 +20,4 @@ jobs:
           REMOTE_USER: ${{ secrets.SERVER_USER }}
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
           TARGET: ~/caddy/site/
-          EXCLUDE: "/.git/, /.github/"
+          EXCLUDE: "/.git/, /.github/, /.claude/"
